@@ -3,7 +3,8 @@ function handleHTTP(req,res) {
 		if(/^\/$/.test(req.url)) {
 			res.writeHead(200, { "Content-type":"text/html"});
 			res.write("<html><head>");
-			res.write("<head><meta http-equiv=\"refresh\" content=\"60; url=\"/\"> ");
+			res.write("<head>");
+			//<meta http-equiv=\"refresh\" content=\"60; url=\"/\"> ");
 			res.write("<link rel=\"stylesheet\" href=\"res/style.css\">");
 			res.write("<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js\"></script>");
 			res.write("<script src=\"res/presenter.js\"></script>");
