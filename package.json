@@ -1,0 +1,15 @@
+{
+  "name": "TVPresenter",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fredrik Melén",
+  "license": "GPL",
+  "dependencies": {
+    "http": "0.0.0",
+    "node-static": "^0.7.7"
+  }
+}

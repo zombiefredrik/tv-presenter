@@ -1,0 +1,15 @@
+body, html {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin:0;
+    padding:0;
+    background: #000;
+    cursor: none;
+}
+
+img {
+	position:absolute;
+	display: block;
+	margin: auto;
+	z-index:10;
+}
