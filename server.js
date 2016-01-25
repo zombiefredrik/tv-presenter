@@ -3,8 +3,7 @@ function handleHTTP(req,res) {
 		if(/^\/$/.test(req.url)) {
 			res.writeHead(200, { "Content-type":"text/html"});
 			res.write("<html><head>");
-			res.write("<head>");
-			//<meta http-equiv=\"refresh\" content=\"60; url=\"/\"> ");
+			res.write("<head><meta http-equiv=\"refresh\" content=\"60; url=\"/\"> ");
 			res.write("<link rel=\"stylesheet\" href=\"res/style.css\">");
 			res.write("<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js\"></script>");
 			res.write("<script src=\"res/presenter.js\"></script>");
@@ -24,18 +23,24 @@ function handleHTTP(req,res) {
 		}
 		else if(/^\/getFiles/.test(req.url)) {
 			res.writeHead(200, { "Content-type":"application/json"});
-			var files = listFiles();
-			for (var key in files) { //since i run this on a disk-station, remove @eaDir
-    			if (files[key] == '@eaDir') files.splice(key, 1);
-			}
-			res.write(JSON.stringify(files));
+			res.write(JSON.stringify(listFiles()));
 			res.end();
 		}
 	}
 }
 
 function listFiles() {
-	return fs.readdirSync('./media/');
+	return cleanFiles(fs.readdirSync('./media/'));
+}
+
+function cleanFiles(files) {
+	for (var key in files) {
+		//since i run this on a disk-station, remove @eaDir
+  		if (files[key] == '@eaDir') files.splice(key, 1);
+  		//crappy macos-file
+  		if (files[key] == '.DS_Store') files.splice(key, 1);
+	}
+	return files;
 }
 
 var port = "8006";
