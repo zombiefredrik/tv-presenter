@@ -9,8 +9,11 @@ function handleHTTP(req,res) {
 			res.write("<script src=\"res/presenter.js\"></script>");
 			res.write("<title>TV-presenter</title>");
 			res.write("</head><body>");
-			res.write("<div id='target_1'></div>");
-			res.write("<div id='target_2'></div>");
+
+			var media = listFiles();
+
+			res.write("<div id='target_1' style=\"z-index: 9\"><img src=\"/media/" + media[0] + "\"  /></div>");
+			res.write("<div id='target_2' style=\"z-index: 11\" ><img src=\"/media/" + media[0] + "\" /></div>");
 			res.write("</body></html>");
 			res.end();
 
@@ -26,6 +29,12 @@ function handleHTTP(req,res) {
 			res.write(JSON.stringify(listFiles()));
 			res.end();
 		}
+		else if(/^\/getSettings/.test(req.url)) {
+			res.writeHead(200, { "Content-type":"application/json"});
+			var settings = require('./settings');
+			res.write(JSON.stringify(settings));
+			res.end();
+		}
 	}
 }
 
@@ -39,6 +48,10 @@ function cleanFiles(files) {
   		if (files[key] == '@eaDir') files.splice(key, 1);
   		//crappy macos-file
   		if (files[key] == '.DS_Store') files.splice(key, 1);
+  		//afpDeleted
+  		if( files[key].indexOf('.afpDeleted') > -1 ) {
+			files.splice(key, 1);
+		}
 	}
 	return files;
 }

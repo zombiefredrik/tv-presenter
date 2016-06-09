@@ -4,8 +4,13 @@ var currentTarget = 'target_1';
 var previousTarget = 'target_2';
 var mediaTimer;
 var fileTimer;
+var speed = 7000;
+
 
 $( document ).ready(function() {
+	$.getJSON( "/getSettings", function( data ) {
+		speed = data.speed;
+	});
 	getFiles();
 });
 
@@ -15,16 +20,26 @@ function getFiles() {
 			data.forEach(function(d){
 				media.push(d);
 			});
+			if(mediaTimer == undefined) {
+				//hack
+				currentMedia = -1;
+				handleMedia();
+
+			}
 		});
 		fileTimer = setTimeout(getFiles,30000);
-		if(mediaTimer == undefined) handleMedia();
+
 }
 
 function handleMedia() {
 	currentMedia++;
-	if(media[currentMedia] == undefined) currentMedia = 0;
+	if(media[currentMedia] == undefined || currentMedia > media.length) {
+		currentMedia = 0;
+	}
 
-	if(media[currentMedia] != undefined){
+	//console.log(currentMedia,media.length);
+
+	if(media[currentMedia] !== undefined){
 		var image = "<img src='/media/" + media[currentMedia] + "'/>";
 
 		$("div#"+previousTarget).css('z-index', 11);
@@ -37,6 +52,6 @@ function handleMedia() {
 		currentTarget = previousTarget;
 		previousTarget = tmp;
 	}
-	mediaTimer = setTimeout(handleMedia, 10000);
+	mediaTimer = setTimeout(handleMedia, speed);
 }
 
